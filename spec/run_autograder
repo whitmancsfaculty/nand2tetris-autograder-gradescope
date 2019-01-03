@@ -14,9 +14,22 @@ fi
 projectdir="$source/nand2tetris/projects/$project"
 testsfile="$source/cases.$project"
 submission="$base/submission"
-resultsfile="$base/results/results.json"
+resultsdir="$base/results"
+resultsfile="$resultsdir/results.json"
+
+# Set up results directory
+if [ ! -d $resultsdir ]; then
+    mkdir $resultsdir
+fi    
 
 # Copy test files to submission directory
+if [ ! -d $submission ]; then
+    echo "Submission directory not found."
+    echo "If testing interactively, create a subdirectory named 'submission' and place files there."
+    echo "If in production, contact the Gradescope admins."
+    exit 1
+fi
+
 cp $projectdir/*.tst $submission
 cp $projectdir/*.cmp $submission
 if [ "$project" == "05" ]; then
