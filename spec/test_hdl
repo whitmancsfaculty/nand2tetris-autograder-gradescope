@@ -19,6 +19,7 @@ fi
 
 tools="$source/nand2tetris/tools/"
 simulator="$tools/HardwareSimulator.sh"
+score_cpu="$source/score_cpu"
 
 submission="$base/submission"
 hdlfile="$submission/$circuit.hdl"
@@ -62,6 +63,10 @@ else
             message="First $passed out of $possible tests passed."
             if [[ "$result" != *failure* ]]; then
                 message="$message $result"
+            elif [[ $test == CPU ]]; then
+                IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(/bin/bash $score_cpu $passed))'
+                score="${lines[0]}"
+                message="$message ${lines[1]}"
             fi
         else
             score=0
