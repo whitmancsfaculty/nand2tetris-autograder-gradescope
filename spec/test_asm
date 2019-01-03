@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Get program info
+project=$1
+test=$2
+maxscore=$3
+
+program=${test%%-*}
+
+echo $program $test $maxscore
+
+# Locate directories and files
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+else
+    source="$base/source"
+fi
+
+tools="$source/nand2tetris/tools/"
+assembler="$tools/Assembler.sh"
+emulator="$tools/CPUEmulator.sh"
+
+submission="$base/submission"
+asmfile="$submission/$program.asm"
+hackfile="$submission/$program.hack"
+tstfile="$submission/$test.tst" 
+cmpfile="$submission/$test.cmp" 
+
+outfile="$submission/$test.out" 
+stdoutfile="$submission/$test.stdout"
+gradefile="$base/results/$test.results.json"
+
+if [ ! -f $asmfile ]; then
+    # Assembly file not found
+    score=0
+    message="Program not submitted"
+else 
+    # Run assembler, redirecting stderr and stdout
+    command="rm -f $hackfile; $assembler $asmfile &> $stdoutfile"
+    eval $command 
+
+    if [ ! -f $hackfile ]; then
+        # Hack file not generated
+	    IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(cat $stdoutfile))'
+        cat $stdoutfile
+        score=0
+        message="Assembler failed. ${lines[1]}"
+    else
+        # Run tests, redirecting stderr and stdout
+        command="$emulator $tstfile &> $stdoutfile"
+        eval $command 
+
+        if [ ! -s $stdoutfile ]; then
+            # The test did not run.
+	        score=0
+            message="The test did not run. Contact your instructor for assistance."
+        else
+	        # If the result file is not empty, parse the results.
+	        IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(cat $stdoutfile))'
+	        result="${lines[0]}"
+            echo $result
+	        if [[ "$result" == *success* ]]; then
+	            score=$maxscore
+	            message="All tests pass!"    
+            elif [ -f $outfile ]; then
+                possible=`wc -l < $cmpfile`
+                (( possible -= 1 ))
+                passed=`wc -l < $outfile`
+                (( passed -= 1 ))
+	            if [[ "$result" == *failure* ]]; then
+                    (( passed -= 1 ))
+                fi
+                score=$(( maxscore * passed / possible ))
+                message="First $passed out of $possible tests passed."
+	            if [[ "$result" != *failure* ]]; then
+                    message="$message $result"
+                fi
+            else
+                score=0
+                message="$result"
+            fi
+	    fi
+    fi
+fi
+
+cat > $gradefile <<EOF
+	{
+	    "score": $score,
+	    "max_score": $maxscore,
+	    "number": "$test",
+	    "output": "$message"
+	},
+EOF

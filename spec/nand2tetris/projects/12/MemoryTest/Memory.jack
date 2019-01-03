@@ -1,0 +1,65 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * Memory operations library.
+ */ 
+class Memory {
+
+    static int free;
+    static Array memory;
+
+    /** Initializes memory parameters. */
+    function void init() {
+        let free = 2048;
+        let free[0] = 16383 - (free+2);
+        let free[1] = null;
+        let memory = 0;
+        return;
+    }
+
+    /** Returns the value of the main memory at the given address. */
+    function int peek(int address) {
+        return memory[address];
+    }
+
+    /** Sets the value of the main memory at this address
+     *  to the given value. */
+    function void poke(int address, int value) {
+        let memory[address] = value;
+        return;
+    }
+
+    /** finds and allocates from the heap a memory block of the 
+     *  specified size and returns a reference to its base address. */
+    function int alloc(int size) {
+        var int block, segment;
+        let segment = free;
+        while (~(segment = 0)) {
+            if (size < segment[0]) {                      // size < length
+                let block = (segment + segment[0]) - size;// find block start
+                let segment[0] = segment[0] - (size+1);   // update length
+                let block[-1] = size + 1;                 // set block size
+                return block;
+            }
+            let segment = segment[1];                     // next
+        }
+        return -1;
+    }
+
+    /** De-allocates the given object and frees its space. */
+    function void deAlloc(int object) {
+        var int segment, list;
+        let segment = object - 1;
+        let segment[0] = object[-1];
+        let list = free;
+        while (~(list[1] = 0) & (segment < list)) {
+            let list = list[1];                            // next
+        } 
+        let segment[1] = list[1];                          // segment.next = list.next
+        let list[1] = segment;                             // list.next = segment
+        return; 
+    }
+}

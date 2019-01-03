@@ -1,0 +1,60 @@
+// File name: projects/12/FreeList.jack
+
+/**
+ * Representation of a free list node
+ */ 
+class FreeList {
+
+    field int _start;
+    field int _length;
+    field FreeList _next;
+
+    constructor FreeList new(int start, int length) {
+        let _start = start;
+        let _length = length;
+        let _next = null;
+        return this;
+    }
+
+    method int getStart() {
+        return _start;
+    }
+
+    method int getLength() {
+        return _length;
+    }
+
+    method int alloc(int size) {
+        var int pointer;
+        let pointer = _start;
+        let _start = _start + size;
+        let _length = _length - size;
+        return pointer;
+    }
+
+    method FreeList getNext() {
+        return _next;
+    }
+
+    method FreeList setNext(FreeList next) {
+        let _next = next;
+        return next;
+    }
+
+    method void insert(FreeList node) {
+        var FreeList next;
+        let next = getNext();
+        if ((next = null) | (node.getStart() < next.getStart())) {
+            do node.setNext(next);
+            do setNext(node);
+        } else {
+            do next.insert(node);
+        }
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

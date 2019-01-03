@@ -1,0 +1,183 @@
+function Main.main 4
+push 1 18
+call String.new 1
+push 1 72
+call String.appendChar 2
+push 1 111
+call String.appendChar 2
+push 1 119
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 109
+call String.appendChar 2
+push 1 97
+call String.appendChar 2
+push 1 110
+call String.appendChar 2
+push 1 121
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 110
+call String.appendChar 2
+push 1 117
+call String.appendChar 2
+push 1 109
+call String.appendChar 2
+push 1 98
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 114
+call String.appendChar 2
+push 1 115
+call String.appendChar 2
+push 1 63
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+call Keyboard.readInt 1
+pop 2 1
+push 2 1
+call Array.new 1
+pop 2 0
+push 1 0
+pop 2 2
+label L1
+push 2 2
+push 2 1
+lt
+not
+if-goto L2
+push 2 0
+push 2 2
+add
+push 1 23
+call String.new 1
+push 1 69
+call String.appendChar 2
+push 1 110
+call String.appendChar 2
+push 1 116
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 114
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 116
+call String.appendChar 2
+push 1 104
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 110
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 120
+call String.appendChar 2
+push 1 116
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 110
+call String.appendChar 2
+push 1 117
+call String.appendChar 2
+push 1 109
+call String.appendChar 2
+push 1 98
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 114
+call String.appendChar 2
+push 1 58
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+call Keyboard.readInt 1
+pop 5 0
+pop 3 1
+push 5 0
+pop 6 0
+push 2 2
+push 1 1
+add
+pop 2 2
+goto L1
+label L2
+push 1 0
+pop 2 2
+push 1 0
+pop 2 3
+label L3
+push 2 2
+push 2 1
+lt
+not
+if-goto L4
+push 2 3
+push 2 2
+push 2 0
+add
+pop 3 1
+push 6 0
+add
+pop 2 3
+push 2 2
+push 1 1
+add
+pop 2 2
+goto L3
+label L4
+push 1 16
+call String.new 1
+push 1 84
+call String.appendChar 2
+push 1 104
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 97
+call String.appendChar 2
+push 1 118
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 114
+call String.appendChar 2
+push 1 97
+call String.appendChar 2
+push 1 103
+call String.appendChar 2
+push 1 101
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+push 1 105
+call String.appendChar 2
+push 1 115
+call String.appendChar 2
+push 1 58
+call String.appendChar 2
+push 1 32
+call String.appendChar 2
+call Output.printString 1
+pop 5 0
+push 2 3
+push 2 1
+call Math.divide 2
+call Output.printInt 1
+pop 5 0
+call Output.println 0
+pop 5 0
+push 1 0
+return

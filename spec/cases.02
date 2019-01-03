@@ -1,0 +1,6 @@
+ALU-nostat  21
+ALU         8    
+Add16       5
+FullAdder   8
+HalfAdder   3
+Inc16       5

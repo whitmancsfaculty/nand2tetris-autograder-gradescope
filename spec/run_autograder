@@ -1,0 +1,39 @@
+#!/bin/bash
+# See http://gradescope-autograders.readthedocs.io/en/latest/specs/
+
+project=05
+type=hdl
+
+# Set up paths and filenames
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+else
+    source="$base/source"
+fi
+projectdir="$source/nand2tetris/projects/$project"
+testsfile="$source/cases.$project"
+submission="$base/submission"
+resultsfile="$base/results/results.json"
+
+# Copy test files to submission directory
+cp $projectdir/*.tst $submission
+cp $projectdir/*.cmp $submission
+if [ "$project" == "05" ]; then
+    cp $projectdir/*.hack $submission   
+fi
+
+# Run tests for all listed exercises
+xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile
+
+# Produce results.json file
+echo "{ \"tests\":" > $resultsfile               
+echo "    [" >> $resultsfile
+cat $base/results/*.results.json >> "$resultsfile"  # Collate exercise results
+if [ "$VENDOR" == "apple" ]; then                   # Remove trailing comma
+    sed -i '' '$ s/.$//' $resultsfile               # sed is platform-dependent (?!)
+else
+    sed -i '$ s/.$//' $resultsfile
+fi
+echo "    ]" >> $resultsfile
+echo "}" >> $resultsfile

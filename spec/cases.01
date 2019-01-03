@@ -1,0 +1,15 @@
+And         3
+And16       3
+DMux        5
+DMux4Way    5
+DMux8Way    5
+Mux         5
+Mux16       3
+Mux4Way16   5
+Mux8Way16   5
+Not         3
+Not16       3
+Or          4
+Or16        3
+Or8Way      5
+Xor         3
