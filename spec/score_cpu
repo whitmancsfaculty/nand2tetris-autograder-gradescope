@@ -6,8 +6,11 @@
 # ALU                          3
 # Memory write                 3
 # Memory read                  3
-# Jumps (mostly)               5
-# Jumps (entirely)             5
+# JLT                          2
+# Do not jump on A-instruction 2
+# JEQ                          2
+# JGT                          2
+# All jumps                    2
 
 passed=$1
 
@@ -33,8 +36,17 @@ elif [[ $passed -lt 24 ]]; then
     echo "23"
     echo "Test failure by D;jlt. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write."
 elif [[ $passed -lt 28 ]]; then
-    echo "28"
+    echo "25"
     echo "Test failure: A=A+1. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write. Partly working: Jumps."
+elif [[ $passed -lt 34 ]]; then
+    echo "27"
+    echo "Test failure by D+1;jeq. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write. Partly working: Jumps."
+elif [[ $passed -lt 44 ]]; then
+    echo "29"
+    echo "Test failure by D;JGT. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write. Partly working: Jumps."
+elif [[ $passed -lt 48 ]]; then
+    echo "31"
+    echo "Test failure by D;JGE. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write. Partly working: Jumps."
 else
     echo "33"
     echo "Working: A-instruction, PC increment, D-Register, A-Register, A-Register. Probably working: ALU, memory read/write, jumps. Contact Prof. Davis if you are concerned about the last point!"
