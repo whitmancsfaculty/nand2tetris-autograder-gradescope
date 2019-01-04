@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# A-instruction, PC increment               8
-# D-register                                3
-# ALU                                       3
-# Memory write                              3
-# Memory read                               3
-# Jumps (mostly)                            8
-# A-register, jumps (entirely)              5
+# A-instruction, PC increment  8
+# D-register                   3
+# A-register                   3
+# ALU                          3
+# Memory write                 3
+# Memory read                  3
+# Jumps (mostly)               5
+# Jumps (entirely)             5
 
 passed=$1
 
@@ -19,19 +20,22 @@ elif [[ $passed -lt 4 ]]; then
 elif [[ $passed -lt 8 ]]; then
     echo "11"
     echo "Test failure: D=A-D: Working: A-instruction, PC increment, D-Register. Probably working: ALU."
-elif [[ $passed -lt 12 ]]; then
+elif [[ $passed -lt 10 ]]; then
     echo "14"
-    echo "Test failure: M=D. Working: A-instruction, PC increment, D-Register. Probably working: ALU."
-elif [[ $passed -lt 20 ]]; then    
+    echo "Test failure: A=D: Working: A-instruction, PC increment, D-Register. Probably working: ALU."
+elif [[ $passed -lt 12 ]]; then
     echo "17"
-    echo "Test failure by D=D-M. Working: A-instruction, PC increment, D-Register. Probably working: ALU, memory write."
-elif [[ $passed -lt 24 ]]; then    
+    echo "Test failure: M=D. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU."
+elif [[ $passed -lt 20 ]]; then    
     echo "20"
-    echo "Test failure by D;jlt. Working: A-instruction, PC increment, D-Register. Probably working: ALU, memory read/write."
+    echo "Test failure by D=D-M. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory write."
+elif [[ $passed -lt 24 ]]; then    
+    echo "23"
+    echo "Test failure by D;jlt. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write."
 elif [[ $passed -lt 28 ]]; then
     echo "28"
-    echo "Test failure: A=A+1. Working: A-instruction, PC increment, D-Register. Probably working: ALU, memory read/write."
+    echo "Test failure: A=A+1. Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write. Partly working: Jumps."
 else
     echo "33"
-    echo "Working: A-instruction, PC increment, D-Register, A-Register. Probably working: ALU, memory read/write, jumps. Contact Prof. Davis if you are concerned about the last point!"
+    echo "Working: A-instruction, PC increment, D-Register, A-Register, A-Register. Probably working: ALU, memory read/write, jumps. Contact Prof. Davis if you are concerned about the last point!"
 fi
