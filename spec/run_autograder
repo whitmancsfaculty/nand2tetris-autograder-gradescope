@@ -1,8 +1,8 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
-project=05
-type=hdl
+project=06
+type=assembler
 
 # Set up paths and filenames
 base=$(pwd)
@@ -22,7 +22,7 @@ if [ ! -d $resultsdir ]; then
     mkdir $resultsdir
 fi    
 
-# Copy test files to submission directory
+# Check submission directory exists
 if [ ! -d $submission ]; then
     echo "Submission directory not found."
     echo "If testing interactively, create a subdirectory named 'submission' and place files there."
@@ -30,14 +30,29 @@ if [ ! -d $submission ]; then
     exit 1
 fi
 
-cp $projectdir/*.tst $submission
-cp $projectdir/*.cmp $submission
-if [ "$project" == "05" ]; then
-    cp $projectdir/*.hack $submission   
-fi
+# Copy test files to submission directory
+case $project in
+    05)
+        cp $projectdir/*.hack $submission       
+        cp $projectdir/*.tst $submission
+        cp $projectdir/*.cmp $submission
+        ;;
+    06)        
+        cp -r $projectdir/* $submission
+        ;;
+    *)
+        cp $projectdir/*.tst $submission
+        cp $projectdir/*.cmp $submission
+        ;;
+esac
 
 # Run tests for all listed exercises
-xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile
+case $project in
+    06)
+        xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
+    *)
+        xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile;;
+esac
 
 # Produce results.json file
 echo "{ \"tests\":" > $resultsfile               

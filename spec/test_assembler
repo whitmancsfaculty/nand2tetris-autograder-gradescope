@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Get program info
+phase=$1
+testno=$2
+test=$3
+maxscore=$4
+descr="Phase $phase, test $testno: $test"
+
+echo "$descr"
+
+# Locate directories and files
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+    python="/anaconda/bin/python3"
+else
+    source="$base/source"
+    python="/usr/bin/python3"
+fi
+
+canonical_assembler="$source/nand2tetris/tools/Assembler.sh"
+
+submission="$base/submission"
+main="$submission/hasm.py"
+student_assembler="$python $main"
+
+asmfile="$submission/$test.asm"
+cmpfile="$submission/$test.cmp" 
+hackfile="$submission/$test.hack"
+
+outfile="$submission/$test.out" 
+stdoutfile="$submission/$test.stdout"
+gradefile="$base/results/$testno.results.json"
+
+if [ ! -f $main ]; then
+    # Program file not found
+    score=0
+    message="hasm.py not submitted"
+    echo "$message"
+else 
+    # Create comparison file
+    command="$canonical_assembler $asmfile; mv $hackfile $cmpfile"
+    eval $command
+    
+    # Run assembler, redirecting stderr and stdout
+    command="$student_assembler $asmfile &> $stdoutfile"
+    eval $command 
+
+    if [ ! -f $hackfile ]; then
+        # Hack file not generated
+        reason=`cat $stdoutfile`
+        score=0
+        message="Assembler failed to run. $reason"
+    else
+        # Hack file generated - compare to standard results
+        result=`/usr/bin/diff -q $cmpfile $hackfile`
+        if [[ $result == *differ* ]]; then
+            score=0
+            message="Output differs from the standard assembler"
+        else
+            score=$maxscore
+            message="Output is identical to the standard assembler"
+        fi
+    fi
+fi
+
+cat > $gradefile <<EOF
+	{
+	    "score": $score,
+	    "max_score": $maxscore,
+	    "number": "$descr",
+	    "output": "$message"
+	},
+EOF
