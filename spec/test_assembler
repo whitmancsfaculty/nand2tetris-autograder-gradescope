@@ -31,7 +31,7 @@ hackfile="$submission/$test.hack"
 
 outfile="$submission/$test.out" 
 stdoutfile="$submission/$test.stdout"
-gradefile="$base/results/$testno.results.json"
+gradefile="$base/results/$phase-$testno.results.json"
 
 if [ ! -f $main ]; then
     # Program file not found
