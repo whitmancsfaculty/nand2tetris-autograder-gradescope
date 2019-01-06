@@ -1,7 +1,7 @@
 // Copyright Janet Davis, January 2018.
 // Free for educational use.
 
-// Exercises all operations using memory as a source.
+// Exercises all computations using memory as a source.
 // This is not a program and cannot be tested by running the resulting
 // .hack file.  Instead, compare to the .hack file produced by the 
 // given assembler.
