@@ -49,9 +49,10 @@ else
 
     if [ ! -f $hackfile ]; then
         # Hack file not generated
-        reason=`cat $stdoutfile`
         score=0
-        message="Assembler failed to run. $reason"
+        # Replace " with ' and line breaks with \n to make the JSON formatted correctly.
+        IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(tr "\042" "\047" < $stdoutfile))'
+        message="Assembler failed to run. ${lines[0]}\n${lines[1]}\n${lines[2]}\n${lines[3]}"
     else
         # Hack file generated - compare to standard results
         result=`/usr/bin/diff -q $cmpfile $hackfile`
