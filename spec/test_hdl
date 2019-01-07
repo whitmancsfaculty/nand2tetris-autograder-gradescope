@@ -62,7 +62,7 @@ else
             score=0
             message="First $passed out of $possible tests passed."
             if [[ "$result" != *failure* ]]; then
-                message="$message $result"
+                message="$message\n$result"
             elif [[ $test == CPU ]]; then
                 IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(/bin/bash $score_cpu $passed))'
                 score="${lines[0]}"

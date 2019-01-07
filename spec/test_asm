@@ -45,7 +45,7 @@ else
 	    IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(cat $stdoutfile))'
         cat $stdoutfile
         score=0
-        message="Assembler failed. ${lines[1]}"
+        message="Assembler failed.\n${lines[1]}"
     else
         # Run tests, redirecting stderr and stdout
         command="$emulator $tstfile &> $stdoutfile"
@@ -74,7 +74,7 @@ else
                 score=$(( maxscore * passed / possible ))
                 message="First $passed out of $possible tests passed."
 	            if [[ "$result" != *failure* ]]; then
-                    message="$message $result"
+                    message="$message\n$result"
                 fi
             else
                 score=0
