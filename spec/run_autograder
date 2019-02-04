@@ -68,6 +68,7 @@ esac
 echo "{ \"tests\":" > $resultsfile               
 echo "    [" >> $resultsfile
 cat $base/results/*.results.json >> "$resultsfile"  # Collate exercise results
+cat $base/results/*/*.results.json >> "$resultsfile" #Collate exercise results
 if [ "$VENDOR" == "apple" ]; then                   # Remove trailing comma
     sed -i '' '$ s/.$//' $resultsfile               # sed is platform-dependent (?!)
 else
