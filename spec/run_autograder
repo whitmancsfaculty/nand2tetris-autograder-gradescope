@@ -2,7 +2,6 @@
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
 project=03
-type=hdl
 
 # Set up paths and filenames
 base=$(pwd)
@@ -54,7 +53,16 @@ case $project in
         mkdir $resultsdir/b
         ;;
 esac
-        
+
+# Determine project type
+case $project in
+    04) 
+       type=asm;;
+    06) 
+       type=assembler;;
+    *)
+       type=hdl;;
+esac
 
 # Run tests for all listed exercises
 case $project in
