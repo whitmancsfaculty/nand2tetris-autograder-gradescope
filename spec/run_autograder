@@ -1,8 +1,8 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
-project=06
-type=assembler
+project=03
+type=hdl
 
 # Set up paths and filenames
 base=$(pwd)
@@ -45,6 +45,16 @@ case $project in
         cp $projectdir/*.cmp $submission
         ;;
 esac
+
+# Reorganize submitted files
+case $project in
+    03)
+        mkdir $submission/b
+        mv $submission/RAM*K.* $submission/b
+        mkdir $resultsdir/b
+        ;;
+esac
+        
 
 # Run tests for all listed exercises
 case $project in

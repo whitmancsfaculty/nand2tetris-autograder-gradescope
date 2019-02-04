@@ -1,7 +1,7 @@
 Bit         8
 PC          13
-RAM16K      5
-RAM4K       5
+b/RAM16K    5
+b/RAM4K     5
 RAM512      5
 RAM64       8
 RAM8        13
