@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Get program info
-phase=$1
+stage=$1
 testno=$2
 test=$3
 maxscore=$4
-descr="Phase $phase, test $testno: $test"
+descr="Stage $stage, test $testno: $test"
 
 echo "$descr"
 
@@ -31,7 +31,7 @@ hackfile="$submission/$test.hack"
 
 outfile="$submission/$test.out" 
 stdoutfile="$submission/$test.stdout"
-gradefile="$base/results/$phase-$testno.results.json"
+gradefile="$base/results/$stage-$testno.results.json"
 
 if [ ! -f $main ]; then
     # Program file not found

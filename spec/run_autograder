@@ -1,7 +1,7 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
-project=03
+project=06
 
 # Set up paths and filenames
 base=$(pwd)
