@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#NEXT TIME: Increase points for final tests of jump logic; 
+#           Decrease points for running programs
+
 # A-instruction, PC increment  8
 # D-register                   3
 # A-register                   3
