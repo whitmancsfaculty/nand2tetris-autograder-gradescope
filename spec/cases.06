@@ -8,8 +8,8 @@ A 8 rect/RectL                          1
 A 9 pong/PongL                          1
 B 1 symbols/Predefined                  5
 B 2 symbols/Label                       8
-B 3 symbols/Labels                      5
+B 3 symbols/MultipleLabels              5
 B 4 symbols/Variables                   13
 B 5 max/Max                             1
-B 6 rect/Rect                           1
-B 7 pong/Pong                           1
+B 6 rect/Rect                           2
+B 7 pong/Pong                           3

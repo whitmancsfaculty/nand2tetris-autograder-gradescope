@@ -5,8 +5,8 @@
 
 @16
 M=1
-(LOOP)
+(loop)
 @16
 M=M+1
-@LOOP
+@loop
 0;JMP
