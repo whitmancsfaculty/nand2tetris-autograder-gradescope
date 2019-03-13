@@ -69,20 +69,10 @@ else
             echo $result
     	    if [[ "$result" == *success* ]]; then
     	        score=$maxscore
-    	        message="All tests pass!"    
+    	        message="The test passed!"
             elif [ -f $outfile ]; then
-                possible=`wc -l < $cmpfile`
-                (( possible -= 1 ))
-                passed=`wc -l < $outfile`
-                (( passed -= 1 ))
-                if [[ "$result" == *failure* ]]; then
-                    (( passed -= 1 ))
-                fi
                 score=0
-                message="First $passed out of $possible tests passed."
-                if [[ "$result" != *failure* ]]; then
-                    message="$message\n$result"
-                fi
+                message="The test did not pass."
             else
                 score=0
                 message="$result"
