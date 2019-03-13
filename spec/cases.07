@@ -1,0 +1,5 @@
+I   a   StackArithmetic/SimpleAdd   13
+I   b   StackArithmetic/StackTest   13
+II  a   MemoryAccess/BasicTest      13
+II  b   MemoryAccess/PointerTest    13  
+II  c   MemoryAccess/StaticTest     13

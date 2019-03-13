@@ -1,7 +1,7 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
-project=06
+project=07
 
 # Set up paths and filenames
 base=$(pwd)
@@ -31,17 +31,17 @@ fi
 
 # Copy test files to submission directory
 case $project in
+    00|01|02|03)
+        cp $projectdir/*.tst $submission
+        cp $projectdir/*.cmp $submission
+        ;;
     05)
         cp $projectdir/*.hack $submission       
         cp $projectdir/*.tst $submission
         cp $projectdir/*.cmp $submission
         ;;
-    06)        
+    04|06|07|08)
         cp -r $projectdir/* $submission
-        ;;
-    *)
-        cp $projectdir/*.tst $submission
-        cp $projectdir/*.cmp $submission
         ;;
 esac
 
@@ -56,27 +56,29 @@ esac
 
 # Determine project type
 case $project in
+    00|01|02|03|05)
+        type=hdl;;
     04) 
-       type=asm;;
+        type=asm;;
     06) 
-       type=assembler;;
-    *)
-       type=hdl;;
+        type=assembler;;
+    07|08)
+        type=vmtranslator;;
 esac
 
 # Run tests for all listed exercises
 case $project in
-    06)
-        xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
-    *)
+    00|01|02|03|04|05)
         xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile;;
+    06|07|08)
+        xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
 esac
 
 # Produce results.json file
 echo "{ \"tests\":" > $resultsfile               
 echo "    [" >> $resultsfile
 cat $base/results/*.results.json >> "$resultsfile"  # Collate exercise results
-cat $base/results/*/*.results.json >> "$resultsfile" #Collate exercise results
+cat $base/results/*/*.results.json >> "$resultsfile" 
 if [ "$VENDOR" == "apple" ]; then                   # Remove trailing comma
     sed -i '' '$ s/.$//' $resultsfile               # sed is platform-dependent (?!)
 else

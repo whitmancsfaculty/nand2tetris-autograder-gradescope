@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# Get program info
+stage=$1
+testno=$2
+test=$3
+maxscore=$4
+descr="Stage $stage, test $testno: $test"
+
+echo "$descr"
+
+# Locate directories and files
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+    python="/anaconda/bin/python3"
+else
+    source="$base/source"
+    python="/usr/bin/python3"
+fi
+
+cpu_emulator="$source/nand2tetris/tools/CPUEmulator.sh"
+
+submission="$base/submission"
+cd $submission
+
+codewriter="hvmCodeWriter.py"
+main="hvm.py"
+student_vmtranslator="$python $main"
+
+program=${test##*/}
+asmfile="$test/$program.asm"
+outfile="$test/$program.out" 
+stdoutfile="$test/$program.stdout"
+tstfile="$test/$program.tst"
+cmpfile="$test/$program.cmp" 
+
+gradefile="$base/results/$stage-$testno.results.json"
+
+if [ ! -f $codewriter ]; then
+    score=0
+    message="hvmCodeWriter.py not submitted"
+    echo "$message"
+else 
+    # Run student VM translator, redirecting stderr and stdout
+    command="$student_vmtranslator $test &> $stdoutfile"
+    eval $command 
+
+    if [ ! -f $asmfile ]; then
+        # Assembly program not generated
+        score=0
+        # Replace " with ' and line breaks with \n to make the JSON formatted correctly.
+        IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(tr "\042" "\047" < $stdoutfile))'
+        message="${lines[0]}\n${lines[1]}\n${lines[2]}\n${lines[3]}\n${lines[4]}"
+        message="\n$message\n${lines[5]}\n${lines[6]}\n${lines[7]}\n${lines[8]}"
+    else
+        # Run tests, redirecting stderr and stdout
+        command="$cpu_emulator $tstfile &> $stdoutfile"
+        eval $command 
+    
+        if [ ! -s $stdoutfile ]; then
+             # The test did not run.
+    	    score=0
+            message="The test did not run. Contact your instructor for assistance."
+        else
+    	    # If the result file is not empty, parse the results.
+    	    IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(cat $stdoutfile))'
+    	    result="${lines[0]}"
+            echo $result
+    	    if [[ "$result" == *success* ]]; then
+    	        score=$maxscore
+    	        message="All tests pass!"    
+            elif [ -f $outfile ]; then
+                possible=`wc -l < $cmpfile`
+                (( possible -= 1 ))
+                passed=`wc -l < $outfile`
+                (( passed -= 1 ))
+                if [[ "$result" == *failure* ]]; then
+                    (( passed -= 1 ))
+                fi
+                score=0
+                message="First $passed out of $possible tests passed."
+                if [[ "$result" != *failure* ]]; then
+                    message="$message\n$result"
+                fi
+            else
+                score=0
+                message="$result"
+    	    fi
+        fi
+    fi
+fi
+
+cat > $gradefile <<EOF
+	{
+	    "score": $score,
+	    "max_score": $maxscore,
+	    "number": "$descr",
+	    "output": "$message"
+	},
+EOF
