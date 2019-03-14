@@ -1,0 +1,39 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/08/FunctionCalls/FibonacciElement/Main.vm
+
+// Defines two different functions, min and max, calling both with 
+// similar argments.
+
+function Main.min 0
+    push argument 0     // x
+    push argument 1     // y
+    gt
+    if-goto THEN
+label ELSE
+    push argument 0     // return x
+    goto ENDIF
+label THEN
+    push argument 1     // return y
+label ENDIF
+    return
+
+function Main.max 0
+    push argument 0     // x
+    push argument 1     // y
+    gt
+    if-goto THEN
+label ELSE
+    push argument 1     // return y
+    goto ENDIF
+label THEN
+    push argument 0     // return x
+label ENDIF
+    return
+
+function Main.main 0
+    push constant 42
+    push constant 17
+    call Main.min 2
+    return

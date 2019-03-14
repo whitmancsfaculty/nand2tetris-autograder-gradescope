@@ -4,5 +4,6 @@ I   c   ProgramFlow/FibonacciSeries     1   -n
 II  a   FunctionCalls/SimpleFunction    21  -n
 II  b   FunctionCalls/LocalsTest        5   -n
 II  c   FunctionCalls/NestedCall        13  -n
-II  d   FunctionCalls/FibonacciElement  13  -y
-II  e   FunctionCalls/StaticsTest       13  -y
+II  d   FunctionCalls/FibonacciElement  5   -y
+II  e   FunctionCalls/StaticsTest       5   -y
+II  f   FunctionCalls/MinMax            5   -y
