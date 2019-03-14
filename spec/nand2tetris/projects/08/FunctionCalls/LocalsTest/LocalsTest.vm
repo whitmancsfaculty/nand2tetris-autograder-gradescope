@@ -3,6 +3,5 @@
 // by Nisan and Schocken, MIT Press.
 // File name: projects/08/FunctionCalls/LocalsTest/LocalsTest.vm
 
-// Sums the local variables. 
-// If they are correctly initialized, the result will be 0.
+// If the local variables are correctly initialized, they will all be 0.
 function LocalsTest.test 5
