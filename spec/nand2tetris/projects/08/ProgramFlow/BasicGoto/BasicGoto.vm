@@ -1,0 +1,13 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/08/ProgramFlow/BasicGoto/BasicGoto.vm
+
+// Illustrates an unconditional goto.
+push constant 17
+goto SKIPPED
+push constant 18
+push constant 19
+push constant 20
+label SKIPPED
+push constant 42

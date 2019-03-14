@@ -1,6 +1,10 @@
 #!/usr/bin/python32
 """
-hvm.py -- VM Translator, Part II
+hvm.py -- VM Translator
+Skeletonized by Janet Davis March 2016
+Refactored by Janet Davis March 2019
+
+You should not change any code in this main program.
 """
 
 import sys
@@ -9,38 +13,40 @@ from hvmCommands import *
 from hvmParser import *
 from hvmCodeWriter import *
 
-def Process(sourceFile, codeWriter):
+def process(sourceFile, codewriter):
     print('Processing ' + sourceFile)
     if debug:
-        parser = Parser(sourceFile, codeWriter)
+        parser = Parser(sourceFile, codewriter)
     else:
         parser = Parser(sourceFile)
-    codeWriter.SetFileName(sourceFile)
+    codewriter.setFileName(sourceFile)
     
-    while parser.Advance():
-        commandType = parser.CommandType()
+    while parser.advance():
+        commandType = parser.getCommandType()
         if commandType == C_ARITHMETIC:
-            codeWriter.WriteArithmetic(parser.Arg1())
+            codewriter.writeArithmetic(parser.getArg1())
         elif commandType in (C_PUSH, C_POP):
-            codeWriter.WritePushPop(commandType, parser.Arg1(), parser.Arg2())
+            codewriter.writePushPop(commandType, parser.getArg1(), 
+                                                 int(parser.getArg2()))
         elif commandType == C_LABEL:
-            codeWriter.WriteLabel(parser.Arg1())
+            codewriter.writeLabel(parser.getArg1())
         elif commandType == C_GOTO:
-            codeWriter.WriteGoto(parser.Arg1())
+            codewriter.writeGoto(parser.getArg1())
         elif commandType == C_IF:
-            codeWriter.WriteIf(parser.Arg1())
+            codewriter.writeIf(parser.getArg1())
         elif commandType == C_FUNCTION:
-            codeWriter.WriteFunction(parser.Arg1(), parser.Arg2())
+            codewriter.writeFunction(parser.getArg1(), int(parser.getArg2()))
         elif commandType == C_RETURN:
-            codeWriter.WriteReturn()
+            codewriter.writeReturn()
         elif commandType == C_CALL:
-            codeWriter.WriteCall(parser.Arg1(), parser.Arg2())
+            codewriter.writeCall(parser.getArg1(), int(parser.getArg2()))
 
 
-def Usage():
-    print('usage: hvm [options] sourceFile.vm')
-    print('    sourceFile may be a directory in which case all vm files in')
-    print('    the directory will be processed to sourceFile.asm')
+def usage():
+    print('usage: hvm [options] sourceFile')
+    print('    sourceFile may be a .vm file or a directory.')
+    print('    If sourceFile is a directory, then all .vm files in')
+    print('    the directory will be processed to a single sourceFile.asm')
     print()
     print('    -d option writes VM commands as comments in .asm file.')
     print('    -n option does not write Sys.init call in the bootstrap.')
@@ -48,6 +54,7 @@ def Usage():
     
 
 def main():
+    sysinit = True
     while True:
         if len(sys.argv) >= 2:
             if sys.argv[1] == '-n':
@@ -61,20 +68,21 @@ def main():
         break
         
     if len(sys.argv) != 2:
-        Usage()
+        usage()
         
     sourceName = sys.argv[1]
     if os.path.isdir(sourceName):
         dirName = sourceName
     else:
         dirName = os.path.split(sourceName)[0]
-    outName = os.path.split(sourceName)[1]
+    outName = os.path.split(sourceName)[-1]
     outName = os.path.splitext(outName)[0] + os.path.extsep + 'asm'
     if len(dirName) > 0:
         outName = dirName + os.path.sep + outName
     print('Creating file ' + outName)
-    codeWriter = CodeWriter(outName)
-    codeWriter.WriteInit()
+    codewriter = CodeWriter(outName)
+    if sysinit:
+        codewriter.writeInit()
     
     if os.path.isdir(sourceName):
         # process all .vm files in dir
@@ -82,13 +90,12 @@ def main():
         print('Processing directory ' + dirName)
         for sourceName in os.listdir(dirName):
             if os.path.splitext(sourceName)[1].lower() == os.path.extsep + 'vm':
-                Process(dirName + os.path.sep + sourceName, codeWriter)
+                process(dirName + os.path.sep + sourceName, codewriter)
     else:
         # process single .vm file
-        Process(sourceName, codeWriter)
+        process(sourceName, codewriter)
 
-    codeWriter.Close()
-
+    codewriter.close()
 
 
 main()

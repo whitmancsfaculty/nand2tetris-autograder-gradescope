@@ -1,5 +1,12 @@
 """
 hvmParser.py -- Parser class for Hack VM translator
+Use advance to parse the next command; use getCommandType, getArg1, and getArg2 
+to obtain the parsed components of that command.
+
+Skeletonized by Janet Davis March 2016
+Refactored by Janet Davis March 2019
+
+You should not change any code in this Parser class.
 """
 
 from hvmCommands import *
@@ -14,11 +21,13 @@ class Parser(object):
         self.line = ''
         self.rawline = ''
         self.comments = comments
+        self.commandType = None
+        self.arg1 = None
+        self.arg2 = None
 
-    def Advance(self):
+    def advance(self):
         """
-        Reads the next command from the input and makes it the current
-        command.
+        Reads the next command from the input and makes it the current command.
         Returns True if a command was found, False at end of file.
         """
         while True:
@@ -31,31 +40,38 @@ class Parser(object):
                 i = self.line.find('//')                
                 if i != -1:
                     if self.comments:
-                        self.comments.Write('    '+self.line[i:]+'\n')
+                        self.comments.write('    '+self.line[i:]+'\n')
                     self.line = self.line[:i]
                 self.line = self.line.replace('\t', ' ').strip()
                 if len(self.line) == 0:
                     continue
-                self._Parse()
+                self._parse()
                 return True
             else:
                 return False
 
-    def _Parse(self):
-        # command [arg1 [arg2]]
+    def _parse(self):
+        """
+        Parses a VM command as command type and up to two argument valuess:
+            command [arg1 [arg2]]
+        """
         self.commandType = None
         self.arg1 = None
         self.arg2 = None
         self.comp = None
         self.jump = None
-        self._ParseCommandType()
+        self._parseCommandType()
         if self.commandType not in (C_ARITHMETIC, C_RETURN):
-            self._ParseArg1()
+            self._parseArg1()
             if self.commandType in (C_PUSH, C_POP, C_FUNCTION, C_CALL):
-                self._ParseArg2()
+                self._parseArg2()
                 
         
-    def _ParseCommandType(self):
+    def _parseCommandType(self):
+        """
+        Parses the command type from a VM command, 
+        storing the result in self.commandType.
+        """
         # command is first run of non-whitespace
         self.line = self.line.lstrip()
         i = self.line.find(' ')
@@ -88,7 +104,7 @@ class Parser(object):
         elif command == T_CALL:
             self.commandType = C_CALL
 
-    def CommandType(self):
+    def getCommandType(self):
         """
         Returns the type of the current command:
             C_ARITHMETIC = 1
@@ -103,7 +119,10 @@ class Parser(object):
         """
         return self.commandType
 
-    def _ParseArg(self):
+    def _parseArg(self):
+        """
+        Parses an argument, returning its value or None.
+        """
         # arg is next run of non-whitespace
         self.line = self.line.lstrip()
         i = self.line.find(' ')
@@ -118,21 +137,27 @@ class Parser(object):
         else:
             return arg
         
-    def _ParseArg1(self):
-        self.arg1 = self._ParseArg()
-
-    def _ParseArg2(self):
-        self.arg2 = self._ParseArg()
-
-    def Arg1(self):
+    def _parseArg1(self):
         """
-        Returns the command's first argument.
+        Parses an argument and stores it in self.arg1.
+        """
+        self.arg1 = self._parseArg()
+
+    def _parseArg2(self):
+        """
+        Parses an argument and stores it in self.arg2.
+        """
+        self.arg2 = self._parseArg()
+
+    def getArg1(self):
+        """
+        Returns the command's first argument (or None).
         """
         return self.arg1
 
-    def Arg2(self):
+    def getArg2(self):
         """
-        Returns the command's second argument.
+        Returns the command's second argument (or None).
         """
         return self.arg2
 

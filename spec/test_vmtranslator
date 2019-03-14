@@ -9,6 +9,14 @@ descr="Stage $stage, test $testno: $test"
 
 echo "$descr"
 
+# Write bootstrap code?
+case $testno in
+    d|e)
+        bootstrap="";;
+    *)
+        bootstrap="-n";;
+esac
+
 # Locate directories and files
 base=$(pwd)
 if [ "$VENDOR" == "apple" ]; then
@@ -43,7 +51,7 @@ if [ ! -f $codewriter ]; then
     echo "$message"
 else 
     # Run student VM translator, redirecting stderr and stdout
-    command="$student_vmtranslator $test &> $stdoutfile"
+    command="$student_vmtranslator $bootstrap $test &> $stdoutfile"
     eval $command 
 
     if [ ! -f $asmfile ]; then

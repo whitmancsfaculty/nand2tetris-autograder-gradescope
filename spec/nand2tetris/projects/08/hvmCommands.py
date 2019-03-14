@@ -1,5 +1,7 @@
 """
 hvmCommands.py -- CommandType values for Hack VM translator
+
+You should not modify the code in this file.
 """
 
 C_ARITHMETIC = 1
