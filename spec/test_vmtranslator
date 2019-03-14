@@ -5,17 +5,10 @@ stage=$1
 testno=$2
 test=$3
 maxscore=$4
+bootstrap=$5
 descr="Stage $stage, test $testno: $test"
 
 echo "$descr"
-
-# Write bootstrap code?
-case $testno in
-    d|e)
-        bootstrap="";;
-    *)
-        bootstrap="-n";;
-esac
 
 # Locate directories and files
 base=$(pwd)

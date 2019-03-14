@@ -70,8 +70,10 @@ esac
 case $project in
     00|01|02|03|04|05)
         xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile;;
-    06|07|08)
+    06)
         xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
+    07|08)
+        xargs -n5 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
 esac
 
 # Produce results.json file
