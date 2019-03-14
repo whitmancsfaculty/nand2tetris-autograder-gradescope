@@ -44,6 +44,9 @@ if [ ! -f $codewriter ]; then
     echo "$message"
 else 
     # Run student VM translator, redirecting stderr and stdout
+    if [ "$bootstrap" == "-y" ]; then
+        bootstrap=""
+    fi
     command="$student_vmtranslator $bootstrap $test &> $stdoutfile"
     eval $command 
 
