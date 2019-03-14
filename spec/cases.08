@@ -1,9 +1,9 @@
 I   a   ProgramFlow/BasicGoto           5   -n
-I   b   ProgramFlow/BasicLoop           5   -n
+I   b   ProgramFlow/BasicLoop           8   -n
 I   c   ProgramFlow/FibonacciSeries     1   -n
 II  a   FunctionCalls/SimpleFunction    21  -n
-II  b   FunctionCalls/LocalsTest        5   -n
+II  b   FunctionCalls/LocalsTest        8   -n
 II  c   FunctionCalls/NestedCall        13  -n
-II  d   FunctionCalls/FibonacciElement  5   -y
-II  e   FunctionCalls/StaticsTest       5   -y
-II  f   FunctionCalls/MinMax            5   -y
+II  d   FunctionCalls/FibonacciElement  8   -y
+II  e   FunctionCalls/StaticsTest       3   -y
+II  f   FunctionCalls/MinMax            8   -y
