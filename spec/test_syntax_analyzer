@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Get program info
+stage=$1
+testno=$2
+test=$3
+maxscore=$4
+
+case "$stage" in
+    1)  task="tokenizer";;
+    2) task="parser";;
+    *)  echo "Invalid stage in cases file - contact your instructor"
+        exit 1
+    ;;
+esac
+
+descr="Stage $stage$testno ($task): $test.jack"
+
+echo "$descr"
+
+# Locate directories and files
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+    python="/anaconda/bin/python3"
+else
+    source="$base/source"
+    python="/usr/bin/python3"
+fi
+
+submission="$base/submission"
+case "$stage" in
+    1)  main="$submission/hjc.py -t"
+        cmpfile="$submission/${test}T.cmp.xml"
+        outfile="$submission/${test}T.out.xml"
+    ;;
+    2) main="$submission/hjc.py"
+        cmpfile="$submission/${test}.cmp.xml"
+        outfile="$submission/${test}.out.xml"
+    ;;
+    *)  echo "Invalid stage in cases file - contact your instructor"
+        exit 1
+    ;;
+esac
+
+jackfile="$submission/$test.jack"
+stdoutfile="$submission/$test.stdout"
+gradefile="$base/results/$stage-$testno.results.json"
+
+if [ ! -f "$submission/hjcTokenizer.py" ]; then
+    score=0
+    message="hjcTokenizer.py not submitted"
+elif ( [ "$stage" == "II" ] && [ ! -f "$submission/hjcCompile.py" ] ); then
+    score=0
+    message="hjcCompile.py not submitted"
+else 
+    # Run main, redirecting stderr and stdout
+    command="$python $main $jackfile &> $stdoutfile"
+    eval $command 
+
+    if [ ! -f $outfile ]; then
+        # Output file not generated
+        score=0
+        # Replace " with ' and line breaks with \n to make the JSON formatted correctly.
+        IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(tr "\042" "\047" < $stdoutfile))'
+        len=${#lines[@]}
+        message=""
+        for (( i=0; i<$len; i++ )); do 
+            message="$message\n${lines[$i]}"
+        done
+    else
+        # Output file generated - compare to standard results
+        # ignoring differences in whitespace
+        result=`/usr/bin/diff -w -q $cmpfile $outfile`
+        if [[ $result == *differ* ]]; then
+            score=0
+            message="Output differs from expected output"
+        else
+            score=$maxscore
+            message="Output is identical to expected output"
+        fi
+    fi
+fi
+
+cat > $gradefile <<EOF
+	{
+	    "score": $score,
+	    "max_score": $maxscore,
+	    "number": "$descr",
+	    "output": "$message"
+	},
+EOF
