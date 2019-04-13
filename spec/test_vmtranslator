@@ -55,8 +55,11 @@ else
         score=0
         # Replace " with ' and line breaks with \n to make the JSON formatted correctly.
         IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(tr "\042" "\047" < $stdoutfile))'
-        message="${lines[0]}\n${lines[1]}\n${lines[2]}\n${lines[3]}\n${lines[4]}"
-        message="\n$message\n${lines[5]}\n${lines[6]}\n${lines[7]}\n${lines[8]}"
+        len=${#lines[@]}
+        message=""
+        for (( i=0; i<$len; i++ )); do
+            message="$message\n${lines[$i]}"
+        done
     else
         # Run tests, redirecting stderr and stdout
         command="$cpu_emulator $tstfile &> $stdoutfile"
