@@ -1,7 +1,7 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 
-project=08
+project=11
 
 # Set up paths and filenames
 base=$(pwd)
@@ -40,7 +40,7 @@ case $project in
         cp $projectdir/*.tst $submission
         cp $projectdir/*.cmp $submission
         ;;
-    04|06|07|08)
+    04|06|07|08|10|11)
         cp -r $projectdir/* $submission
         ;;
 esac
@@ -64,16 +64,23 @@ case $project in
         type=assembler;;
     07|08)
         type=vmtranslator;;
+    10)
+        type=syntax_analyzer;;
+    11)
+        type=compiler;;
 esac
 
 # Run tests for all listed exercises
 case $project in
     00|01|02|03|04|05)
         xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile;;
-    06)
+    06|10|11)
         xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
     07|08)
         xargs -n5 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
+    *)  echo "Test command not specified for project $project"
+        exit 1
+        ;;
 esac
 
 # Produce results.json file

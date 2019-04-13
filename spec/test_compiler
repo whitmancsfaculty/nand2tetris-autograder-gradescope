@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# Get program info
+part=$1
+program=$2
+class=$3
+maxscore=$4
+
+test="$program/$class"
+descr="Part $part, $test.jack"
+
+echo "$descr"
+
+# Locate directories and files
+base=$(pwd)
+if [ "$VENDOR" == "apple" ]; then
+    source="$base"
+    python="/anaconda/bin/python3"
+else
+    source="$base/source"
+    python="/usr/bin/python3"
+fi
+
+canonical_compiler="$source/nand2tetris/tools/JackCompiler.sh"
+
+submission="$base/submission"
+main="$submission/hjc.py"
+
+jackfile="$submission/$test.jack"
+vmfile="$submission/$test.vm"
+cmpfile="$submission/$test.cmp.vm"
+stdoutfile="$submission/$test.stdout"
+gradefile="$base/results/$program-$class.results.json"
+
+if [ ! -f "$submission/hjcTokenizer.py" ]; then
+    score=0
+    message="hjcTokenizer.py not submitted"
+elif [ ! -f "$submission/hjcParse.py" ]; then
+    score=0
+    message="hjcParse.py not submitted"
+elif [ ! -f "$submission/hjcCompile.py" ]; then
+    score=0
+    message="hjcCompile.py not submitted"
+else 
+    # Create comparison file
+    command="$canonical_compiler $jackfile; mv $vmfile $cmpfile"
+    eval $command
+
+    # Run main, redirecting stderr and stdout
+    command="$python $main $jackfile &> $stdoutfile"
+    eval $command 
+
+    if [ ! -f $vmfile ]; then
+        # Output file not generated
+        score=0
+        # Replace " with ' and line breaks with \n to make the JSON formatted correctly.
+        IFS=$'\r\n' GLOBIGNORE='*' command eval 'lines=($(tr "\042" "\047" < $stdoutfile))'
+        len=${#lines[@]}
+        message=""
+        for (( i=0; i<$len; i++ )); do 
+            message="$message\n${lines[$i]}"
+        done
+    else
+        # Output file generated - compare to standard results
+        # ignoring differences in whitespace
+        result=`/usr/bin/diff -w -q $cmpfile $vmfile`
+        if [[ $result == *differ* ]]; then
+            score=0
+            message="Output differs from expected output"
+        else
+            score=$maxscore
+            message="Output is identical to expected output"
+        fi
+    fi
+fi
+
+cat > $gradefile <<EOF
+	{
+	    "score": $score,
+	    "max_score": $maxscore,
+	    "number": "$descr",
+	    "output": "$message"
+	},
+EOF
