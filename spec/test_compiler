@@ -1,24 +1,50 @@
 #!/bin/bash
 
 # Get program info
-part=$1
-program=$2
-class=$3
+stage=$1
+testno=$2
+test=$3
 maxscore=$4
 
-test="$program/$class"
-descr="Part $part, $test.jack"
-
+descr="Stage $stage$testno: $test.jack"
 echo "$descr"
+
+case $test in
+    'Seven/Main')   
+        keywords=(function Main main push constant call Math multiply add Output printInt pop temp return)
+        ;;
+    'ConvertToBin/Main')
+        keywords=(label goto if-goto gt eq and local argument "pop local" neg not WHILE\_EXP WHILE\_END)
+        ;;
+    'Square/Main')
+        keywords=(SquareGame.run SquareGame.dispose "push local 0")
+        ;;
+    'Square/Square')
+        keywords=("push pointer 0")
+        ;;
+    'Average/Main')
+        keywords=("pop pointer 1" "pop that 0" "push that 0" String.new String.appendChar)
+        ;;
+    'Pong/Ball')
+        keywords=("push pointer 0")
+        ;;
+    'Pong/Ball')
+        keywords=("pop pointer 1")
+        ;;
+esac
 
 # Locate directories and files
 base=$(pwd)
 if [ "$VENDOR" == "apple" ]; then
     source="$base"
     python="/anaconda/bin/python3"
+    grep="/usr/bin/grep"
+    comm="/usr/bin/comm"
 else
     source="$base/source"
     python="/usr/bin/python3"
+    grep="/bin/grep"
+    comm="/usr/bin/comm --nocheck-order"
 fi
 
 canonical_compiler="$source/nand2tetris/tools/JackCompiler.sh"
@@ -26,18 +52,17 @@ canonical_compiler="$source/nand2tetris/tools/JackCompiler.sh"
 submission="$base/submission"
 main="$submission/hjc.py"
 
+pointsfile="$submssion/$test.points"
+
 jackfile="$submission/$test.jack"
-vmfile="$submission/$test.vm"
 cmpfile="$submission/$test.cmp.vm"
+vmfile="$submission/$test.vm"
 stdoutfile="$submission/$test.stdout"
-gradefile="$base/results/$program-$class.results.json"
+gradefile="$base/results/$stage-$testno.results.json"
 
 if [ ! -f "$submission/hjcTokenizer.py" ]; then
     score=0
     message="hjcTokenizer.py not submitted"
-elif [ ! -f "$submission/hjcParse.py" ]; then
-    score=0
-    message="hjcParse.py not submitted"
 elif [ ! -f "$submission/hjcCompile.py" ]; then
     score=0
     message="hjcCompile.py not submitted"
@@ -60,16 +85,44 @@ else
         for (( i=0; i<$len; i++ )); do 
             message="$message\n${lines[$i]}"
         done
+    elif [ ! -s $vmfile ]; then
+        score=0
+        message="Output file is empty"
     else
         # Output file generated - compare to standard results
         # ignoring differences in whitespace
         result=`/usr/bin/diff -w -q $cmpfile $vmfile`
-        if [[ $result == *differ* ]]; then
-            score=0
-            message="Output differs from expected output"
-        else
+        if [[ $result != *differ* ]]; then
             score=$maxscore
-            message="Output is identical to expected output"
+            message="Output is identical to the expected output"
+        else
+            score=0
+            kwlist=''
+            for idx in ${!keywords[@]} 
+            do 
+                kw="${keywords[$idx]}"
+                command="$grep '$kw' $vmfile > .tmp"
+                eval $command
+                if [ -s .tmp ]; then
+                    score=$((score + 2))
+                    kwlist="$kwlist '$kw'"
+                fi
+            done
+            if [[ $score == 0 ]]; then
+                message="Output contains none of the expected keywords"
+            else
+                numerator=`$comm -1 -2 $cmpfile $vmfile | wc -l`
+                numerator=$((numerator - `$comm -1 -3 $cmpfile $vmfile | wc -l`))
+                denominator=`cat $cmpfile | wc -l`
+                frac=`echo "100*$numerator/$denominator" | bc`
+                commonscore=`echo "$maxscore*$numerator/$denominator" | bc`
+                if [[ $commonscore > $score ]]; then
+                    score=$commonscore
+                    message="Output file is $frac% identical to the expected output"
+                else
+                    message="Output file contains keywords (${kwlist:1}) but differs significantly from the expected output"
+                fi
+            fi
         fi
     fi
 fi
