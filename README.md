@@ -22,10 +22,25 @@ To build a zipfile and upload it to a corresponding assignment on Gradescope:
 1. Upload `00.zip`.
 1. Click **Update Autograder**.
 1. When the update is complete, click **Test Autograder** and upload your sample solution (e.g., `Xor.hdl`).
+1. Complete configuration of the assignment by visiting the assignment settings page. Under `Ignored Files`, copy and paste the contents of `spec/ignore.00`.  
 
 See the [Gradescope autograder documentation](https://gradescope-autograders.readthedocs.io/en/latest/) for more information.
 
-## Scoring and Gradescope configuration
+## Architecture
+* A Makefile is provided. All source code is in the `spec` directory. 
+* Tools and test cases are provided in the `spec\nand2tetris` directory.
+  * The Nand2Tetris tools are treated as a black box. They are exactly the same tools used by students for their own testing.
+  * Project 4 includes an additional program, `fillStatic`. This program can be tested automatically, unlike the `fill` program provided with Nand2Tetris which must be tested interactively.
+  * There are additional test cases for projects 6-8 and 11.
+  * Project 11 is divided in two parts, 11a and 11b.
+  * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.
+  * If using [Python starter code](https://github.com/whitmancsfaculty/nand2tetris-startercode), the instructor may want to add Python files that students do not modify before building zip files, so that students do not have to include unmodified files in their Gradescope submissions. Those files are not provided in this public repository.
+* The files `cases.<project>` specify test cases and point values for each project.
+* The files `ignore.<project>` specify files that Gradescope should not upload from student submissions.
+* `spec/run_autograder` runs all test cases for a project, as required by Gradescope. It obtains the project name from a command-line parameter or from the `spec/project` file, which is created automatically when building a zipfile to upload to Gradescope.
+* Projects using different tools require different scripts to evaluate test cases. These scripts are named `test_*`.
+
+## Scoring
 Project test cases and point values are specified in a file named `spec/cases.<project>`, one test case per line.
 Note that the number of columns varies from project to project due to the differing nature of the tools and test cases.
 
@@ -34,7 +49,10 @@ With the exception of Project 0, which is a practice project, each project is in
 The difference is made up through style or interactive tests.
 In making adjustments, I would lean towards increasing points from the autograder and reducing points from style.
 
-Unless otherwise specified, automated scoring is binary - full credit if the canonical output is produced, 0 otherwise.
+Unless otherwise specified, automated scoring is binary with respect to each test case: full credit is awarded if the canonical output is produced, otherwise 0.
+
+The autograder provides feedback on errors and test failures to the extent feasible. 
+The autograder does not replace interactive testing in the development environment.
   
 | Project | Type | Points | Notes |
 | ------: | :----------- | -----: | :-----|
@@ -52,22 +70,3 @@ Unless otherwise specified, automated scoring is binary - full credit if the can
 |     11a | Compiler     |     75 | Consists of the `seven` and `convertToBin` test cases. Automated scoring is the higher of two times the number of keywords found or the percent of the output identical to expected output times the point value.
 |     11b | Compiler     |     75 | Consists of the remaining Project 11 test cases. Automated scoring is as for 11a.
 |      12 | Jack OS      |      - | Not yet assigned.
-
-Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
-The files named `spec/ignore.<project>` specify which files to ignore for teach project.
-The contents can be copied and pasted to the corresponding Gradescope assignment settings page.
-
-The autograder provides feedback on errors and test failures to the extent feasible. 
-The autograder does not replace interactive testing in the development environment.
-
-## Architecture
-* A Makefile is provided. All source code is in the `spec` directory. 
-* Tools and test cases are provided in the `spec\nand2tetris` directory.
-  * The Nand2Tetris tools are treated as a black box. They are exactly the same tools used by students for their own testing.
-  * Project 4 includes an additional program, `fillStatic`. This program can be tested automatically, unlike the `fill` program provided with Nand2Tetris which must be tested interactively.
-  * There are additional test cases for projects 6-8 and 11.
-  * Project 11 is divided in two parts, 11a and 11b.
-  * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.
-  * If using [Python starter code](https://github.com/whitmancsfaculty/nand2tetris-startercode), the instructor may want to add Python files that students do not modify before building zip files, so that students do not have to include unmodified files in their Gradescope submissions. Those files are not provided in this public repository.
-* `spec/run_autograder` runs all test cases for a project, as required by Gradescope. It obtains the project name from a command-line parameter or from the `spec/project` file, which is created automatically when building a zipfile to upload to Gradescope.
-* Projects using different tools require different scripts to evaluate test cases. These scripts are named `test_*`.
