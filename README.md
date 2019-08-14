@@ -16,8 +16,8 @@ To test the sample assignment on your own computer:
 1. Run the autograder by typing `make 00.test`.
 1. Review the results printed from `spec/results/results.json`.
 
-## Building the sample assignment
-To build the sample assignment on Gradescope:
+## Releasing the sample assignment on Gradescope
+To build a zipfile and upload it to a corresponding assignment on Gradescope:
 1. To build the zipfile, `make 00.zip clean`.
 1. On Gradescope, upgrade the course to **Gradescope Complete**. Go to the **Assignments** tab and create a new programming assignment worth 4 points.
 1. Upload `00.zip`.
