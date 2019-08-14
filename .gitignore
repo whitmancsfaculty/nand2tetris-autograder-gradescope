@@ -1,3 +1,4 @@
 /spec/submission/*
 /spec/results/*
 *.py
+*.swp
