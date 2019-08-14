@@ -1,5 +1,4 @@
-# nand2tetris_gradescope_autograder
-Gradescope autograder specification for Nand2Tetris projects.
+# Nand2Tetris Gradescope Autograder
 
 Nand2Tetris materials are copyright the authors and may be found at https://www.nand2tetris.org/
 
@@ -34,6 +33,8 @@ Project tests add up to a variable number of points.
 With the exception of Project 0, which is a practice project, each project is intended to be worth a total of 75 points. 
 The difference is made up through style or interactive tests.
 In making adjustments, I would lean towards increasing points from the autograder and reducing points from style.
+
+Unless otherwise specified, automated scoring is binary - full credit if the canonical output is produced, 0 otherwise.
   
 | Project | Type | Points | Notes |
 | ------: | :----------- | -----: | :-----|
@@ -41,15 +42,15 @@ In making adjustments, I would lean towards increasing points from the autograde
 |      01 | HDL          |     60 |
 |      02 | HDL          |     50 | 
 |      03 | HDL          |     60 | Memory intensive - configure Gradescope to use a full CPU.
-|      04 | ASM          |     50 | `Fill.asm` must be tested interactively. Export all submissions from "Review Grades."
+|      04 | ASM          |     50 | Scoring is the fraction of tests passed times points possible. `Fill.asm` must be tested interactively. Export all submissions from "Review Grades."  
 |      05 | HDL          |     56 | Detailed scoring of the CPU is performed by the `score_cpu` script.
-|      06 | Assembler    |     66 | Additional unit tests in `symbols` and `instructions`.
+|      06 | Assembler    |     66 | Additional unit tests in `symbols` and `instructions`. 
 |      07 | VM translator|     63 |
 |      08 | VM translator|     75 | Additional tests in `FunctionCalls/LocalsTest`, `FunctionCalls/MinMax`, and `ProgramFlow/BasicGoto`. 
 |      09 | Jack         |      - | Student-designed program. Automated testing not possible. Gradescope submission not recommended.
 |      10 | Syntax analyzer |  75 |
-|     11a | Compiler     |     75 | Consists of the `seven` and `convertToBin` test cases.
-|     11b | Compiler     |     75 | Consists of the remaining Project 11 test cases.
+|     11a | Compiler     |     75 | Consists of the `seven` and `convertToBin` test cases. Automated scoring is the higher of two times the number of keywords found or the percent of the output identical to expected output times the point value.
+|     11b | Compiler     |     75 | Consists of the remaining Project 11 test cases. Automated scoring is as for 11a.
 |      12 | Jack OS      |      - | Not yet assigned.
 
 Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
