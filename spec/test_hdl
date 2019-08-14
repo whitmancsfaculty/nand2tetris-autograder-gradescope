@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright 2019 Janet Davis CC-BY-NC-SA
 
 # Get circuit info
 project=$1

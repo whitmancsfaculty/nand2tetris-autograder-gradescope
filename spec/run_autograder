@@ -1,5 +1,6 @@
 #!/bin/bash
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
+# Copyright 2019 Janet Davis CC-BY-NC-SA
 
 project='11a'
 

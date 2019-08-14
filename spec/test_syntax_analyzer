@@ -1,6 +1,7 @@
 #!/bin/bash
+# Copyright 2019 Janet Davis CC-BY-NC-SA
 
-# Get program info
+# Get syntax analyzer test info
 stage=$1
 testno=$2
 test=$3
