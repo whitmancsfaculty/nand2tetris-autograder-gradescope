@@ -34,11 +34,18 @@ See the [Gradescope autograder documentation](https://gradescope-autograders.rea
   * There are additional test cases for projects 6-8 and 11.
   * Project 11 is divided in two parts, 11a and 11b.
   * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.
-  * If using [Python starter code](https://github.com/whitmancsfaculty/nand2tetris-startercode), the instructor may want to add Python files that students do not modify before building zip files, so that students do not have to include unmodified files in their Gradescope submissions. Those files are not provided in this public repository.
 * The files `cases.<project>` specify test cases and point values for each project.
 * The files `ignore.<project>` specify files that Gradescope should not upload from student submissions.
 * `spec/run_autograder` runs all test cases for a project, as required by Gradescope. It obtains the project name from a command-line parameter or from the `spec/project` file, which is created automatically when building a zipfile to upload to Gradescope.
 * Projects using different tools require different scripts to evaluate test cases. These scripts are named `test_*`.
+
+## Adding Python starter code
+If using [Python starter code](https://github.com/whitmancsfaculty/nand2tetris-startercode), the instructor may want to add Python files that students do not modify before building zip files, so that students do not have to include unmodified files in their Gradescope submissions. Those files are not provided in this public repository. 
+
+1. Obtain the [latest release](ttps://github.com/whitmancsfaculty/nand2tetris-startercode/releases) of the Python starter code. This should be the same as the starter code given to students.
+1. Copy over the contents of the `spec\nand2tetris\projects` directory. 
+1. For projects with Python source code, delete the files that students will modify and submit so that the starter code is not copied over student work during autograding.
+1. Make sure to test the Gradescope assignments before releasing them to students.
 
 ## Scoring
 Project test cases and point values are specified in a file named `spec/cases.<project>`, one test case per line.
