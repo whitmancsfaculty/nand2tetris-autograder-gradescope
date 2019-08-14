@@ -31,7 +31,8 @@ Project test cases and point values are specified in a file named `spec/cases.<p
 Note that the number of columns varies from project to project due to the differing nature of the tools and test cases.
 
 Project tests add up to a variable number of points. 
-With the exception of Project 0, which is a practice project, each project is intended to be worth a total of 75 points, with the difference being made up through style or interactive tests.
+With the exception of Project 0, which is a practice project, each project is intended to be worth a total of 75 points. 
+The difference is made up through style or interactive tests.
 In making adjustments, I would lean towards increasing points from the autograder and reducing points from style.
   
 | Project | Type | Points | Notes |
@@ -42,13 +43,13 @@ In making adjustments, I would lean towards increasing points from the autograde
 |      03 | HDL          |     60 | Memory intensive - configure Gradescope to use a full CPU.
 |      04 | ASM          |     50 | `Fill.asm` must be tested interactively. Export all submissions from "Review Grades."
 |      05 | HDL          |     56 | Detailed scoring of the CPU is performed by the `score_cpu` script.
-|      06 | Assembler    |     66 | 
+|      06 | Assembler    |     66 | Additional unit tests in `symbols` and `instructions`.
 |      07 | VM translator|     63 |
-|      08 | VM translator|     75 | 
-|      09 | Jack         |      - | Student-designed program. Automated testing not possible. Do not recommend Gradescope submission.
+|      08 | VM translator|     75 | Additional tests in `FunctionCalls/LocalsTest`, `FunctionCalls/MinMax`, and `ProgramFlow/BasicGoto`. 
+|      09 | Jack         |      - | Student-designed program. Automated testing not possible. Gradescope submission not recommended.
 |      10 | Syntax analyzer |  75 |
-|     11a | Compiler     |     75 |
-|     11b | Compiler     |     75 |
+|     11a | Compiler     |     75 | Consists of the `seven` and `convertToBin` test cases.
+|     11b | Compiler     |     75 | Consists of the remaining Project 11 test cases.
 |      12 | Jack OS      |      - | Not yet assigned.
 
 Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
@@ -65,6 +66,7 @@ The autograder does not replace interactive testing in the development environme
   * Project 4 includes an additional program, `fillStatic`. This program can be tested automatically, unlike the `fill` program provided with Nand2Tetris which must be tested interactively.
   * There are additional test cases for projects 6-8 and 11.
   * Project 11 is divided in two parts, 11a and 11b.
-  * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.   
+  * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.
+  * If using [Python starter code](https://github.com/whitmancsfaculty/nand2tetris-startercode), the instructor may want to add Python files that students do not modify before building zip files, so that students do not have to include unmodified files in their Gradescope submissions. Those files are not provided in this public repository.
 * `spec/run_autograder` runs all test cases for a project, as required by Gradescope. It obtains the project name from a command-line parameter or from the `spec/project` file, which is created automatically when building a zipfile to upload to Gradescope.
 * Projects using different tools require different scripts to evaluate test cases. These scripts are named `test_*`.
