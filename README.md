@@ -26,6 +26,38 @@ To build a zipfile and upload it to a corresponding assignment on Gradescope:
 
 See the [Gradescope autograder documentation](https://gradescope-autograders.readthedocs.io/en/latest/) for more information.
 
+## Scoring and Gradescope configuration
+Project test cases and point values are specified in a file named `spec/cases.<project>`, one test case per line.
+Note that the number of columns varies from project to project due to the differing nature of the tools and test cases.
+
+Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
+The files named `spec/ignore.<project>` specify which files to ignore for teach project.
+The contents can be copied and pasted to the corresponding Gradescope assignment settings page.
+
+Project tests add up to a variable number of points. 
+With the exception of Project 0, which is a practice project, each project is intended to be worth a total of 75 points, with the difference being made up through style or interactive tests.
+In making adjustments, I would lean towards increasing points from the autograder and reducing points from style.
+  
+| Project | Project type | Points | Notes |
+| ------: | :----------- | -----: | :-----|
+|      00 | HDL          |      4 | Practice assignment - do not transfer to gradebook.
+|      01 | HDL          |     60 |
+|      02 | HDL          |     50 | 
+|      03 | HDL          |     60 | Memory intensive - configure Gradescope to use a full CPU.
+|      04 | ASM          |     50 | `Fill.asm` must be tested interactively. Export all submissions from "Review Grades."
+|      05 | HDL          |     56 | Detailed scoring of the CPU is performed by the `score_cpu` script.
+|      06 | Assembler    |     66 | 
+|      07 | VM translator|     63 |
+|      08 | VM translator|     75 | 
+|      09 | Jack         |      - | Student-designed program. Automated testing not possible. Do not recommend Gradescope submission.
+|      10 | Syntax analyzer |  75 |
+|     11a | Compiler     |     75 |
+|     11b | Compiler     |     75 |
+|      12 | Jack         |      - | Not yet assigned.
+
+The autograder provides feedback on errors and test failures to the extent feasible. 
+The autograder does not replace interactive testing in the development environment.
+
 ## Architecture
 * A Makefile is provided. All source code is in the `spec` directory. 
 * Tools and test cases are provided in the `spec\nand2tetris` directory.
@@ -34,9 +66,5 @@ See the [Gradescope autograder documentation](https://gradescope-autograders.rea
   * There are additional test cases for projects 6-8 and 11.
   * Project 11 is divided in two parts, 11a and 11b.
   * Otherwise, assignments and test cases are as in the textbook Nand2Tetris distribution.   
-* Each `spec/cases.<project>` file lists the test cases and point values for a project assignment, one test case per line.
-  * There are no cases files for projects 9, 12, and 13 because they cannot be tested automatically.
-  * Note that file format varies from project to project due to the different nature of the test cases.
-  * Additional scoring breakdown for the CPU constructed in Project 5 can be found in `spec/score_cpu`.
 * `spec/run_autograder` runs all test cases for a project, as required by Gradescope. It obtains the project name from a command-line parameter or from the `spec/project` file, which is created automatically when building a zipfile to upload to Gradescope.
 * Projects using different tools require different scripts to evaluate test cases. These scripts are named `test_*`.
