@@ -30,15 +30,11 @@ See the [Gradescope autograder documentation](https://gradescope-autograders.rea
 Project test cases and point values are specified in a file named `spec/cases.<project>`, one test case per line.
 Note that the number of columns varies from project to project due to the differing nature of the tools and test cases.
 
-Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
-The files named `spec/ignore.<project>` specify which files to ignore for teach project.
-The contents can be copied and pasted to the corresponding Gradescope assignment settings page.
-
 Project tests add up to a variable number of points. 
 With the exception of Project 0, which is a practice project, each project is intended to be worth a total of 75 points, with the difference being made up through style or interactive tests.
 In making adjustments, I would lean towards increasing points from the autograder and reducing points from style.
   
-| Project | Project type | Points | Notes |
+| Project | Type | Points | Notes |
 | ------: | :----------- | -----: | :-----|
 |      00 | HDL          |      4 | Practice assignment - do not transfer to gradebook.
 |      01 | HDL          |     60 |
@@ -53,7 +49,11 @@ In making adjustments, I would lean towards increasing points from the autograde
 |      10 | Syntax analyzer |  75 |
 |     11a | Compiler     |     75 |
 |     11b | Compiler     |     75 |
-|      12 | Jack         |      - | Not yet assigned.
+|      12 | Jack OS      |      - | Not yet assigned.
+
+Gradescope programming assignments should be configured to ignore certain files when uploaded by students.
+The files named `spec/ignore.<project>` specify which files to ignore for teach project.
+The contents can be copied and pasted to the corresponding Gradescope assignment settings page.
 
 The autograder provides feedback on errors and test failures to the extent feasible. 
 The autograder does not replace interactive testing in the development environment.
