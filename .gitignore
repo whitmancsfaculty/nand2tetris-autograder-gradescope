@@ -2,3 +2,4 @@
 /spec/results/*
 *.py
 *.swp
+.DS_Store
