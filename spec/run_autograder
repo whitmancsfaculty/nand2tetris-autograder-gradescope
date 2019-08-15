@@ -2,20 +2,28 @@
 # See http://gradescope-autograders.readthedocs.io/en/latest/specs/
 # Copyright 2019 Janet Davis CC-BY-NC-SA
 
-project='11a'
-
 # Set up paths and filenames
 base=$(pwd)
-if [ "$VENDOR" == "apple" ]; then
+if [ $GRADESCOPE_DEV ]; then
     source="$base"
 else
     source="$base/source"
 fi
-projectdir="$source/nand2tetris/projects/$project"
-testsfile="$source/cases.$project"
 submission="$base/submission"
 resultsdir="$base/results"
 resultsfile="$resultsdir/results.json"
+
+# Get project name
+if [ $1 ]; then
+    project=$1;
+elif [ -f $source/project ]; then
+    project=`cat $source/project`
+else
+    echo "Please specify project number on command line or in 'project' file"
+    exit 1
+fi
+projectdir="$source/nand2tetris/projects/$project"
+testsfile="$source/cases.$project"
 
 # Set up results directory
 if [ ! -d $resultsdir ]; then
@@ -32,7 +40,7 @@ fi
 
 # Copy test files to submission directory
 case $project in
-    00|01|02|03)
+    00|01|02|03|04)
         cp $projectdir/*.tst $submission
         cp $projectdir/*.cmp $submission
         ;;
@@ -41,7 +49,7 @@ case $project in
         cp $projectdir/*.tst $submission
         cp $projectdir/*.cmp $submission
         ;;
-    04|06|07|08|10|11a|11b)
+    06|07|08|10|11a|11b)
         cp -r $projectdir/* $submission
         ;;
 esac
@@ -75,7 +83,7 @@ esac
 case $project in
     00|01|02|03|04|05)
         xargs -n2 -I {} /bin/bash -c " $source/test_$type $project {} {} " < $testsfile;;
-    06|101|11a|11b)
+    06|10|11a|11b)
         xargs -n4 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;
     07|08)
         xargs -n5 -I {} /bin/bash -c "$source/test_$type {} {} {} {}" < $testsfile;;

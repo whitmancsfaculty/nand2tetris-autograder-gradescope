@@ -1,0 +1,10 @@
+*.hack
+*.out 
+CPU-external.cmp
+CPU-external.tst
+CPU.cmp
+CPU.tst
+Computer*.cmp
+Computer*.tst
+Memory.cmp
+Memory.tst

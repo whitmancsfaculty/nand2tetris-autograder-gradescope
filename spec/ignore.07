@@ -1,0 +1,7 @@
+MemoryAccess/*
+StackArithmetic/*
+hvm.py
+hvmCommands.py
+hvmParser.py
+__pycache__/*
+*.pyc

@@ -1,0 +1,13 @@
+*.out 
+Add16.cmp
+Add16.tst
+ALU-nostat.cmp
+ALU-nostat.tst
+ALU.cmp
+ALU.tst
+FullAdder.cmp
+FullAdder.tst
+HalfAdder.cmp
+HalfAdder.tst
+Inc16.cmp
+Inc16.tst

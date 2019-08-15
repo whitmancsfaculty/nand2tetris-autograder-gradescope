@@ -1,0 +1,11 @@
+*.jack
+*.vm
+*.xml
+hjc.py
+hjcError.py
+hjcOutputFile.py
+hjcSymbolTable.py
+hjcTokens.py
+hjcVmWriter.py
+__pycache__/*
+*.pyc

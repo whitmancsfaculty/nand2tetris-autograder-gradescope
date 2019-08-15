@@ -12,7 +12,7 @@ echo "$descr"
 
 # Locate directories and files
 base=$(pwd)
-if [ "$VENDOR" == "apple" ]; then
+if [ $GRADESCOPE_DEV ]; then
     source="$base"
     python="/anaconda/bin/python3"
 else

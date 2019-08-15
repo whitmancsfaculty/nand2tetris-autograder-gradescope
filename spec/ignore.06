@@ -1,0 +1,4 @@
+*.asm
+*.hack
+__pycache__/*
+*.pyc
