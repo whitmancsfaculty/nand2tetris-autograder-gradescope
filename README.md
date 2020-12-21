@@ -72,7 +72,7 @@ The autograder does not replace interactive testing in the development environme
 |      06 | Assembler    |     66 | Additional unit tests in `symbols` and `instructions`. 
 |      07 | VM translator|     63 |
 |      08 | VM translator|     75 | Additional tests in `FunctionCalls/LocalsTest`, `FunctionCalls/MinMax`, and `ProgramFlow/BasicGoto`. 
-|      09 | Jack         |      - | Student-designed program. Automated testing not possible. Gradescope submission not recommended.
+|      09 | Jack         |      - | Student-designed program. Automated testing not possible.
 |      10 | Syntax analyzer |  75 |
 |     11a | Compiler     |     75 | Consists of the `seven` and `convertToBin` test cases. Automated scoring is the higher of two times the number of keywords found or the percent of the output identical to expected output times the point value.
 |     11b | Compiler     |     75 | Consists of the remaining Project 11 test cases. Automated scoring is as for 11a.
